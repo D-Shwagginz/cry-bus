@@ -1,18 +1,54 @@
-# cry-bus
+# Crystal Bus
 
-TODO: Write a description here
+A simple library used to create an IO bus and attach connectors to read and write
+data on the bus.
 
 ## Installation
 
-TODO: Write installation instructions here
+1. Add `cry-bus` to your `shard.yml`:
+```yml
+dependencies:
+  cry-bus:
+    github: D-Shwagginz/cry-bus
+```
+
+2. Run `shards install`
 
 ## Usage
 
-TODO: Write usage instructions here
+For a guide check out the [docs](https://d-shwagginz.github.io/cry-bus/Crybus.html)
 
-## Development
+Make sure to check out the [examples](https://github.com/D-Shwagginz/cry-bus/tree/master/examples)!
 
-TODO: Write development instructions here
+Quick example of using Crybus to connect two registers to be written to and read from
+on a bus:
+```crystal
+require "cry-bus"
+
+class Register < Crybus::Circuit
+  @data : UInt8 = 0
+
+  def output(address : UInt32) : UInt8
+    return @data
+  end
+
+  def input(address : UInt32, data : UInt8)
+    @data = data
+  end
+
+  def initialize(bus : Crybus::Bus, address : UInt32)
+    bus.connect(@connector)
+    @connector.segments << Crybus::Connector::Segment.new(address, ->output(UInt32), ->input(UInt32, UInt8))
+  end
+end
+
+bus = Crybus::Bus.new
+
+Register.new(bus, 0)
+Register.new(bus, 1)
+```
+
+You can now `bus.read(address)` and `bus.write(address, data)` to registers at 0x00 and 0x01!
 
 ## Contributing
 
@@ -24,4 +60,4 @@ TODO: Write development instructions here
 
 ## Contributors
 
-- [your-name-here](https://github.com/your-github-user) - creator and maintainer
+- [D. Shwagginz](https://github.com/D-Shwagginz) - creator and maintainer

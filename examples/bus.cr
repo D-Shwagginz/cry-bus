@@ -1,4 +1,6 @@
-require "cry-bus"
+# Shows how to use the bus to read and write data to registers
+
+require "../src/cry-bus.cr"
 
 class Register < Crybus::Circuit
   @data : UInt8 = 0
@@ -19,8 +21,8 @@ end
 
 bus = Crybus::Bus.new
 
-test1 = Register.new(bus, 0)
-test2 = Register.new(bus, 1)
+Register.new(bus, 0)
+Register.new(bus, 1)
 
 puts "Reading address 0: #{bus.read(0)}"
 puts "Reading address 1: #{bus.read(1)}"
