@@ -1,0 +1,17 @@
+name: bus
+version: 0.1.0
+
+authors:
+  - D. Shwagginz <devin@shwaggi.nz>
+
+targets:
+  bus:
+    main: src/bus.cr
+
+dependencies:
+  cry-bus:
+    path: ../../
+
+crystal: '>= 1.18.2'
+
+license: MIT
